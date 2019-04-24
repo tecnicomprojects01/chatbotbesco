@@ -1,0 +1,135 @@
+.chat_frame{
+	width:34%; 
+	height: 516px;
+	position: fixed;
+	bottom: 0;
+	right:10%;
+	border-radius: 10px;
+	;z-index: 99999999;
+}
+
+#minimize_c{
+	    right: 13.5%;
+    position: fixed;
+    top: 138px;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 9999999999999999;
+}
+
+.min_box_chat{
+	cursor:pointer;
+	background: #212325;
+	width: 29%;
+	height: 56px;
+	position: fixed;
+	bottom: 3px;
+	right: 10%;
+	border-radius: 10px;
+	z-index: 99999999;
+}
+
+@media(max-width: 1300px){
+	.chat_frame{
+		width: 36%;
+	}
+}
+
+@media(max-width: 1224px){
+	.chat_frame{
+		width: 38%;
+	}
+}
+
+@media(max-width: 1158px){
+	.chat_frame{
+		width: 38%;
+	}
+}
+
+@media(max-width: 1020px){
+	.chat_frame{
+		width: 40%;
+	}
+}
+
+@media(max-width: 975px){
+	.chat_frame{
+		width: 36%;
+	}
+
+	.min_box_chat{
+		width: 35%;
+	}
+}
+
+@media(max-width: 900px){
+	.chat_frame{
+		width: 50%;
+	}
+
+	#minimize_c{
+		right: 15%;
+		top: 54px;
+	}
+
+	.min_box_chat{
+		width: 40%;
+	}
+}
+
+
+@media(max-width: 700px){
+	.chat_frame{
+		width: 65%;
+		right:0%;
+	}
+
+	#minimize_c{
+		right: 16%;
+		top: 54px;
+	}
+
+	.min_box_chat{
+		width: 50%;
+	}
+}
+
+@media(max-width: 620px){
+	#minimize_c{
+		right: 7%;
+		top: 54px;
+	}
+
+	.min_box_chat{
+		width: 55%;
+	}
+}
+
+@media(max-width: 520px){
+	#minimize_c{
+		right: 9%;
+		top: 54px;
+	}
+
+	.min_box_chat{
+		width: 70%;
+	}
+}
+
+@media(max-width: 480px){
+	.chat_frame{
+		width: 98%;
+		right:0%;
+	}
+
+	#minimize_c{
+		right: 10%;
+		top: 54px;
+	}
+
+	.min_box_chat{
+		width: 85%;
+	}
+}

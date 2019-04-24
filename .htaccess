@@ -1,0 +1,5 @@
+RewriteEngine on
+RewriteCond %{SERVER_PORT} !^443$
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+   RewriteCond $1 !^(index\.php|robots\.txt|public)
+   RewriteRule ^(.*)$ index.php/$1 [L]
