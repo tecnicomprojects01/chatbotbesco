@@ -210,7 +210,7 @@
                                                       <a href="editarvendedor.php?id=<?=$fila['id']?>" ><button class="item" data-toggle="tooltip" data-placement="top" title="Editar">
                                                             <i class="zmdi zmdi-edit"></i>
                                                       </button></a>
-                                                      <a href="#" class="invisible" ><button class="item" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                                      <a href="eliminarvendedor.php?id=<?=$fila['id']?>"><button class="item" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button></a>
                                                       </div>
@@ -228,7 +228,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
-                                    <p>Derechos reservados a Tecnicom soluciones & Datos <a href="http://www.tecnicom.pe>Tecnicom soluciones & Datos"</a>.</p>
+                                    <p>Derechos reservados a Tecnicom soluciones & Datos <a href="http://www.tecnicom.pe">Tecnicom soluciones & Datos</a>.</p>
                                 </div>
                             </div>
                         </div>
