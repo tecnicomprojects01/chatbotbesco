@@ -4,6 +4,9 @@
    include('session.php');
    $hoy = date('d-m-Y');
    $hoy1 = date('Y-m-d');
+   $proyecto=$_POST['proyecto'];
+   $texfe=$_POST['textfe'];
+   $texfe1=$_POST['textfe1'];
 ?>
 <html lang="en">
 
@@ -52,15 +55,26 @@
     <script type="text/javascript">
         
 
+<?php if($texfe1!=""){
 
+    ?>
+window.onload =function busqueda(){
+mostrar(); }<?php } ?>
 
        
         function mostrar(){
 document.getElementById("cc-pament1").style.display = 'block';
    var elemento = document.getElementById("colum");
     elemento.className = "col-lg-3";
+    
 }
 
+
+function clicc(){
+
+ $(".button-default").click();
+document.getElementsByClassName("button-default").click();
+}
 
     </script>
 
@@ -73,7 +87,7 @@ document.getElementById("cc-pament1").style.display = 'block';
             <div class="header-mobile__bar">
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
-                        <a class="logo" href="index.html">
+                        <a class="logo" href="index.php">
                             Panel 
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
@@ -116,6 +130,9 @@ document.getElementById("cc-pament1").style.display = 'block';
                                 </li>
                                 <li>
                                     <a href="vendedores.php">Vendedores</a>
+                                </li>
+                                <li>
+                                    <a href="proyectos.php">Proyectos</a>
                                 </li>
                             </ul>
                         </li>
@@ -166,6 +183,9 @@ document.getElementById("cc-pament1").style.display = 'block';
                                 <li>
                                     <a href="vendedores.php">Vendedores</a>
                                 </li>
+                                <li>
+                                    <a href="proyectos.php">Proyectos</a>
+                                </li>
                                 
                             </ul>
                         </li>
@@ -215,23 +235,38 @@ document.getElementById("cc-pament1").style.display = 'block';
                                 <label for="cc-payment" class="control-label mb-1">Consultar por fecha</label>
                                 <div class="row">
                                 <div id="colum" class="col-lg-6">
-                                <input id="cc-pament" name="textfe" type="date" class="form-control" aria-required="true" aria-invalid="false" placeholder="<?php echo "DD-MM-YYYY"; ?> ">    
+                               <input id="cc-pament" name="textfe" type="date" class="form-control" aria-required="true" aria-invalid="false" placeholder="<?php echo $hoy; ?> " value="<?= isset($_POST['textfe']) ? $_POST['textfe'] : '' ?>" min="09-04-2019" max="<?php echo $hoy; ?> " requerid> 
                                                               
                                 </div>
+                                
                                 <div id="cc-pament1" class="col-lg-3">
                                     
-                                <input  name="textfe1" type="date" class="form-control" aria-required="true" aria-invalid="false" placeholder="<?php echo "Fecha hasta"; ?> ">                               
+                                <input  name="textfe1" type="date" class="form-control" aria-required="true" aria-invalid="false" value="<?= isset($_POST['textfe1']) ? $_POST['textfe1'] : '' ?>" max="<?php echo $hoy; ?> " requerid>                               
                                 </div>
                                 <div class="col-6 col-md-5">
                                 <select name="proyecto" id="select" class="form-control">
+                                    <option value="todos">Todos</option>
                                 <?php
+                               
                                     $sqlx="SELECT * FROM proyectos";
+                                
                                     $resultx = mysqli_query($db,$sqlx);
                                     while($rowx = mysqli_fetch_array($resultx,MYSQLI_ASSOC)){
+         
+if (isset($_POST['proyecto'])) {
+                                        $s = $_POST['proyecto'] ==  $rowx['id'] ? 'selected' : '';
                                     ?>
+
+                                        <option value="<?= $rowx['id']; ?>" <?= $s ?>><?php echo utf8_encode($rowx['name']);  ?></option>
+        
+                                        
+                                   <?php  }else{ ?> ?>
+
                                         <option value="<?= $rowx['id']; ?>"><?php echo utf8_encode($rowx['name']);  ?></option>
                                     <?php 
-                                    } ?>
+                                    } }
+                                    ?>
+                                    
                                 </select>
                                 
                                 </div>
@@ -245,7 +280,9 @@ document.getElementById("cc-pament1").style.display = 'block';
                         </form>
                             <div class="col-lg-12">
                                 <div class="table-responsive table--no-card m-b-30">
+                                    
                                     <table style="margin-top:20px; " class="table table-borderless table-striped table-earning">
+                                        <button style="margin-bottom: 8px;" class="btn btn-primary" onclick="clicc()">Exportar xlsx</button> 
                                         <thead>
                                             <tr>
                                                 <th>ID Cliente</th>
@@ -258,10 +295,38 @@ document.getElementById("cc-pament1").style.display = 'block';
                                         </thead>
                                         <tbody>
                                             <?php 
+                                            $contador=0;
                                             if( isset($_POST['textfe']) || isset($_POST['proyecto'])){
                                                 $confecha= $_POST['textfe'] == "" ? "" : date("Y-m-d", strtotime($_POST['textfe']));
                                                 $id_proyecto = $_POST['proyecto'];
+                                                
+                                                if($_POST['textfe1']!= ""){
+                                                    
+                                                    $confecha1=$_POST['textfe1'];
+                                                  
+                                                   if($proyecto=="todos"){
+                                                  
+                                                   	$sql="SELECT * FROM llamado_vendedor where created_at between '$confecha' and   '$confecha1'   and tipo_llamado_id = 1";
+
+                                                   }else{
+
+
+
+
+
+                                                    $sql="SELECT * FROM llamado_vendedor where created_at between '$confecha' and   '$confecha1' and proyecto_id = $id_proyecto  and tipo_llamado_id = 1";
+                                                }
+
+                                                }else{
+                                                	if($proyecto=="todos"){
+
+                                                   	$sql="SELECT * FROM llamado_vendedor where created_at like '$confecha%' and  tipo_llamado_id = 1";
+
+                                                   }else{
+
                                                 $sql="SELECT * FROM llamado_vendedor where created_at like '$confecha%' and  proyecto_id = $id_proyecto  and tipo_llamado_id = 1";
+                                            }
+                                            }
 
                                                 $result = mysqli_query($db,$sql);
                                                 while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -283,6 +348,7 @@ document.getElementById("cc-pament1").style.display = 'block';
                                                     $sql3="SELECT numcliente FROM llamadas where  cliente_id=$id_cliente";
                                                     $result3 = mysqli_query($db,$sql3);
                                                     $row3 = mysqli_fetch_array($result3,MYSQLI_ASSOC);
+                                                    $contador=$contador+1;
 
                                                     ?>
                                                     <tr>      
@@ -318,6 +384,9 @@ document.getElementById("cc-pament1").style.display = 'block';
                                                     $result3 = mysqli_query($db,$sql3);
                                                     $row3 = mysqli_fetch_array($result3,MYSQLI_ASSOC);
 
+                                                    $count = mysqli_num_rows($result);
+                                          
+
                                                     ?>
                                                     <tr>      
                                                         <th><?php echo $id_cliente;  ?></th>
@@ -327,9 +396,15 @@ document.getElementById("cc-pament1").style.display = 'block';
                                                         <td><?php echo utf8_encode($fecha);  ?></td>
                                                         <td><?php echo utf8_encode($hora);  ?></td>
                                                     </tr>
-                                            <?php }} ?>                                            
+
+                                            <?php
+                                            $contador=$contador+1;
+                                            }} ?>                                            
                                         </tbody>
+                                        <h5 style="color:#f28b0e;">Total de contactos via  llamadas:<?php
+                                    echo "<span style='margin-left:4px'>$contador</span>"; ?></h5>
                                     </table>
+                                   
                                 </div>
                             </div>
                         </div>                     

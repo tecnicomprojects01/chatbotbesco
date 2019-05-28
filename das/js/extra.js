@@ -63,3 +63,36 @@ onload=function(){
 
   window.onunload=function(){};
 }
+function eliminarvendedor(vid,opc){
+    $.ajax({
+        type: 'POST',
+        url: 'eliminarvendedor.php',
+        data: {id: vid, op: opc},
+
+        success: function (data) {
+          var json = JSON.parse(data);
+          alert(json.mensaje);
+        },
+        error: function () {
+          console.log('Ocurrio un error por favor intente nuevamente');
+        }
+    })
+  return false;
+}
+
+function eliminarproyecto(vid,opc){
+    $.ajax({
+        type: 'POST',
+        url: 'eleminarproyecto.php',
+        data: {id: vid, op: opc},
+
+        success: function (data) {
+          var json = JSON.parse(data);
+          alert(json.mensaje);
+        },
+        error: function () {
+          console.log('Ocurrio un error por favor intente nuevamente');
+        }
+    })
+  return false;
+}

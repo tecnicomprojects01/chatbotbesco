@@ -220,7 +220,7 @@
                             <div class="col-md-12">
                                   <div class="card">
                                     <div class="card-header">
-                                        <strong>Nuevo Vendedor</strong>
+                                        <strong>Editar Vendedor</strong>
                                     </div>
                                     <?php
                                       mysqli_query($db,"SET NAMES 'utf8'");  

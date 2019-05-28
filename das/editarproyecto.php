@@ -1,10 +1,77 @@
-<!DOCTYPE html>
-
 <?php
    include('session.php');
-   $hoy = date('d-m-Y');
-   $ho1 = date('Y-m-d');
+   $id = $_GET['id'];
+
+   if (isset($_POST['name']) && isset($_POST['telefono']) && isset($_POST['cargos'])) {
+     $name = $_POST['name'];
+     $telefono = $_POST['telefono'];
+     $cargos = $_POST['cargos'];
+      $precio = $_POST['precio'];
+       $llamada = $_POST['llamada'];
+        $whap = $_POST['whap'];
+        if($llamada!=1){
+            $llamada=0;
+
+
+        }
+          if($whap!=1){
+            $whap=0;
+
+
+        }
+
+     $sql1 = "UPDATE proyectos SET
+          name = '$name',
+          descripcion = '$telefono',
+          ubicacion = '$cargos',
+           aceptar_llamadas='$llamada',
+          aceptar_whap='$whap',
+          desde_precio='$precio'
+
+          WHERE id = ".$id;
+     
+     if (mysqli_query($db,$sql1)) {
+    
+        require dirname(__FILE__).'/extras/phpmailer/phpmailer/src/Exception.php';
+        require dirname(__FILE__).'/extras/phpmailer/phpmailer/src/PHPMailer.php';
+
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
+
+        $array = array("darwinvaleroAAreb@gmail.com","codigo2AA@tecnicom.pe");
+
+        $asunto = '[Notificación] - Cambios datos de vendedor'; //Asunto
+
+        $content = "";
+
+        $content .= "El cliente ha modificado informacion personal del vendedor ".$name."<br>";
+        $content .= "Telefono: ". $telefono."<br>";
+        $content .= "Se debe Actualizar la cola";
+
+        $mail->setFrom('devm4648AA@gmail.com', 'Besco cambios'); // Nuestro correo electrónico
+        $mail->IsHTML(true); // Indicamos que el email tiene formato HTML                      
+        $mail->Subject = $asunto; // El asunto del email
+        $mail->Body = $content; // El cuerpo de nuestro mensaje
+
+        // Recorremos nuestro array de e-mails.
+
+        foreach ($array as $email) {
+          $mail->AddAddress($email); // Cargamos el e-mail destinatario a la clase PHPMailer
+          $mail->Send(); // Realiza el envío =)
+          $mail->ClearAddresses(); // Limpia los "Address" cargados previamente para volver a cargar uno.
+        }
+
+        ?>
+        <script>
+          alert("Proyecto Actualizado");
+          window.location = 'proyectos.php';
+        </script>
+        <?php
+
+     }
+  }
+
 ?>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -23,7 +90,7 @@
     <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
     <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-
+    <link rel="SHORTCUT ICON" href="https://www.tecnicom.pe/icon-tecnicom.ico">
     <!-- Bootstrap CSS-->
     <link href="vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
@@ -38,11 +105,7 @@
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
-<style type="text/css">
-    .fech{
-        display:none;
-    }
-</style>
+
 </head>
 
 <body class="animsition">
@@ -67,14 +130,17 @@
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="has-sub">
+                            <a href="inicio.php"><i class="fas fa-home"></i>Inicio</a>
+                        </li>
+                        <li class="has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-chart-bar"></i>Conversiones</a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                               <li>
+                                <li>
                                     <a href="llamadas.php">Llamadas</a>
                                 </li>
                                 <li>
-                                    <a href="contactos.php">Contacto</a>
+                                    <a href="contactos.php">Formulario</a>
                                 </li>
                                 <li>
                                     <a href="whapp.php">Whatsapp</a>
@@ -87,7 +153,7 @@
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-desktop"></i>Modificaciones</a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                 <li>
+                                <li>
                                     <a href="edit.php">Mensajeria</a>
                                 </li>
                                 <li>
@@ -111,7 +177,10 @@
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="active has-sub">
+                        <li class="has-sub">
+                            <a href="inicio.php"><i class="fas fa-home"></i>Inicio</a>
+                        </li>
+                        <li class="has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-tachometer-alt"></i>Conversiones</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -119,17 +188,16 @@
                                     <a href="llamadas.php">Llamadas</a>
                                 </li>
                                 <li>
-                                    <a href="contactos.php">Contacto</a>
+                                    <a href="contactos.php">Formulario</a>
                                 </li>
                                 <li>
                                     <a href="whapp.php">Whatsapp</a>
                                 </li>
-                                
                             </ul>
                         </li>
                         
                         
-                        <li class="has-sub">
+                        <li class="active has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-desktop"></i>Modificaciones</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -156,108 +224,56 @@
                     <div class="container-fluid">
                         <div class="header-wrap">
                             
-                            
+                           <button onClick="window.location.href = 'logout.php'" type="button" class="btn btn btn-warning">Salir</button> 
                         </div>
                     </div>
                 </div>
             </header>
             <!-- HEADER DESKTOP-->
-
             <!-- MAIN CONTENT-->
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col">
-                                <h3 class="title-5 m-b-35">Consultas via llamada</h3>
+                            <div class="col-md-12">
+                                  <div class="card">
+                                    <div class="card-header">
+                                        <strong>Editar proyecto</strong>
+                                    </div>
+                                    <?php
+                                      mysqli_query($db,"SET NAMES 'utf8'");  
+                                      $sql = "SELECT * FROM proyectos WHERE id=".$id;
+                                      $res = mysqli_query($db,$sql);
+                                      $fila = mysqli_fetch_array($res);
+                                    ?>
+                                    <div class="card-body card-block">
+                                      <form action="" method="POST">
+                                        <div class="form-group">
+                                            <label for="name" class=" form-control-label">Nombre</label>
+                                            <input type="text" name="name" placeholder="Ingrese Nombre y Apellido" class="form-control" value="<?= $fila['name']?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="telefono" class=" form-control-label">Descripcion</label>
+                                            <textarea type="text" name="telefono" placeholder="123456789" class="form-control" value="" required><?=  $fila['descripcion']?></textarea> 
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cargos" class=" form-control-label">Ubicacion</label>
+                                            <input type="text" name="cargos" placeholder="Ingrese el cargo" class="form-control" value="<?= $fila['ubicacion']?>" required>
+                                        </div>
+                                          <div class="form-group">
+                                            <label for="cargos" class=" form-control-label">Precio</label>
+                                            <input type="text" name="precio" placeholder="" class="form-control" value="<?= $fila['desde_precio']?>" required>
+                                        </div>
+                                        <label  class="checkbox-inline"><input name="llamada" value="1" type="checkbox"  <?php if($fila['aceptar_llamadas']==1){ echo " checked";} ?>>Llamadas</label>
+                                         <div class="form-group">
+                                       <label   class="checkbox-inline"><input name="whap" value="1" type="checkbox"  <?php if($fila['aceptar_whap']==1){ echo " checked";} ?>>Whatsapp</label>
+</div>
+                                        <input type="submit" class="btn btn-primary" value="Actualizar">
+                                      </form>
+                                    </div>
+                                </div>                          
                             </div>
-                        </div>
-                        <div class="row">
-                        <form action="" method="post" novalidate="novalidate">
-                            <div style="display: none;" id="fech" class="fech form-group">
-                                <label for="cc-payment" class="control-label mb-1">Consultar por fecha</label>
-                                <div class="row">
-                                <div class="col-lg-6">
-                                <input id="cc-pament" name="textfe" type="text" class="form-control" aria-required="true" aria-invalid="false" value="<?php echo $hoy; ?> ">
-                                
-                                </div>
-                                <div class="col-lg-6">
-                                    <button type="submit" class="btn btn-primary ">Buscar</button>
-                                </div>
-                                </div>
-                            </div>      
-                        </form>
-                            <div class="col-lg-12">
-                                <button class="button-default">Exporta xlsx</button> 
-                                <div class="table-responsive table--no-card m-b-30">
-
-                                    <table style="margin-top:20px; " class="table table-borderless table-striped table-earning">
-                                        <thead>
-                                            <tr>
-                                                <th>ID Cliente</th>
-                                                <th>Vendedor</th>
-                                                <th>Telefono</th>
-                                                <th>Fecha</th>
-                                                <th>Hora</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php 
-                                            if( isset($_POST['textfe']) ){
-                                                $confecha=date("Y-m-d", strtotime($_POST['textfe']));
-                                                             
-                                                $sql="SELECT * FROM llamado_vendedor where created_at  like '$confecha%' and tipo_llamado_id = 1";
-                                                $result = mysqli_query($db,$sql);
-                                                while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                                                    $id_vendedor = $row['vendedor_id'];
-                                                    $id_cliente = $row['cliente_id'];
-                                                    $fecha=date("d-m-Y", strtotime($row['created_at']));
-                                                    $hora=date("h:i:s A", strtotime($row['created_at']));
-
-                                                    $sql1="SELECT * FROM vendedores where  id=$id_vendedor";
-                                                    $result1 = mysqli_query($db,$sql1);
-                                                    $row1 = mysqli_fetch_array($result1,MYSQLI_ASSOC);
-
-                                                    ?>
-                                                    <tr>      
-                                                        <th><?php echo $id_cliente;  ?></th>
-                                                        <td><?php echo utf8_encode($row1['name']);  ?></td>
-                                                        <td><?php echo utf8_encode($row['telefono']);  ?></td>  <td>
-                                                        <td><?php echo utf8_encode($row['telefono']);  ?></td>                                                
-                                                        <td><?php echo utf8_encode($fecha);  ?></td>
-                                                        <td><?php echo utf8_encode($hora);  ?></td>
-                                                    </tr>
-                                            <?php } 
-                                            }else{
-
-                                            $sql="SELECT * FROM llamado_vendedor where created_at  like '$hoy1%' and tipo_llamado_id = 1";
-                                            $result = mysqli_query($db,$sql);      
-                                            while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                                                $id_vendedor = $row['vendedor_id'];
-                                                    $id_cliente = $row['cliente_id'];
-                                                    $fecha=date("d-m-Y", strtotime($row['created_at']));
-                                                    $hora=date("h:i:s A", strtotime($row['created_at']));
-
-                                                    $sql1="SELECT * FROM vendedores where  id=$id_vendedor";
-                                                    $result1 = mysqli_query($db,$sql1);
-                                                    $row1 = mysqli_fetch_array($result1,MYSQLI_ASSOC);
-
-                                                    ?>
-                                                    <tr>      
-                                                        <th><?php echo $id_cliente;  ?></th>
-                                                        <td><?php echo utf8_encode($row1['name']);  ?></td>
-                                                        <td><?php echo utf8_encode($row1['telefono']);  ?></td>                                                 
-                                                        <td><?php echo utf8_encode($fecha);  ?></td>
-                                                        <td><?php echo utf8_encode($hora);  ?></td>
-                                                    </tr>
-                                            <?php }} ?>                                            
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>                     
-                        </div>
-                        </div>
+                        </div>                            
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
@@ -268,8 +284,6 @@
                     </div>
                 </div>
             </div>
-            <!-- END MAIN CONTENT-->
-            <!-- END PAGE CONTAINER-->
         </div>
 
     </div>
@@ -297,7 +311,3 @@
 
     <!-- Main JS-->
     <script src="js/main.js"></script>
-
-</body>
-
-</html>

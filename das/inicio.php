@@ -55,7 +55,7 @@
             <div class="header-mobile__bar">
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
-                        <a class="logo" href="index.html">
+                        <a class="logo" href="inicio.php">
                             Panel 
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
@@ -98,6 +98,9 @@
                                 </li>
                                 <li>
                                     <a href="vendedores.php">Vendedores</a>
+                                </li>
+                                <li>
+                                    <a href="proyectos.php">Proyectos</a>
                                 </li>
                             </ul>
                         </li>
@@ -149,7 +152,10 @@
                                 </li>
                                 <li>
                                     <a href="vendedores.php">Vendedores</a>
-                                </li>                    
+                                </li>  
+                                <li>
+                                    <a href="proyectos.php">Proyectos</a>
+                                </li>                  
                                 
                             </ul>
                         </li>
@@ -348,7 +354,7 @@
           labels: [
             'Formulario',
             'Llamadas',
-            'Wathsapp'
+            'Whatsapp'
           ]
         },
         options: {

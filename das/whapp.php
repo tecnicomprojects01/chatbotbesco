@@ -4,6 +4,9 @@
    include('session.php');
    $hoy = date('d-m-Y');
    $hoy1 = date('Y-m-d');
+   $proyecto=$_POST['proyecto'];
+   $texfe=$_POST['textfe'];
+   $texfe1=$_POST['textfe1'];
 ?>
 <html lang="en">
 
@@ -16,6 +19,7 @@
     <meta name="keywords" content="au theme template">
     <link href="dist/css/tableexport.css" rel="stylesheet" type="text/css">
     <link rel="SHORTCUT ICON" href="https://www.tecnicom.pe/icon-tecnicom.ico">
+
     <!-- Title Page-->
     <title>Dashboard</title>
 
@@ -39,6 +43,40 @@
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
+    
+
+    <style type="text/css">
+        #cc-pament1{
+            display: none;
+        }
+       
+    </style>
+
+    <script type="text/javascript">
+        
+
+<?php if($texfe1!=""){
+
+    ?>
+window.onload =function busqueda(){
+mostrar(); }<?php } ?>
+
+       
+        function mostrar(){
+document.getElementById("cc-pament1").style.display = 'block';
+   var elemento = document.getElementById("colum");
+    elemento.className = "col-lg-3";
+    
+}
+function clicc(){
+
+ $(".button-default").click();
+document.getElementsByClassName("button-default").click();
+}
+
+
+
+    </script>
 
 </head>
 
@@ -49,7 +87,7 @@
             <div class="header-mobile__bar">
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
-                        <a class="logo" href="index.html">
+                        <a class="logo" href="index.php">
                             Panel 
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
@@ -66,7 +104,7 @@
                         <li class="has-sub">
                             <a href="inicio.php"><i class="fas fa-home"></i>Inicio</a>
                         </li>
-                        <li class="active has-sub">
+                        <li class="has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-chart-bar"></i>Conversiones</a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
@@ -92,6 +130,9 @@
                                 </li>
                                 <li>
                                     <a href="vendedores.php">Vendedores</a>
+                                </li>
+                                <li>
+                                    <a href="proyectos.php">Proyectos</a>
                                 </li>
                             </ul>
                         </li>
@@ -142,6 +183,9 @@
                                 <li>
                                     <a href="vendedores.php">Vendedores</a>
                                 </li>
+                                <li>
+                                    <a href="proyectos.php">Proyectos</a>
+                                </li>
                                 
                             </ul>
                         </li>
@@ -172,42 +216,77 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col">
-                                <h3 class="title-5 m-b-35">Consultas via Whatsapp</h3>
+                                <h3 class="title-5 m-b-35">Consultas Via Whatsapp</h3>
                             </div>
                         </div>
                         <div class="row">
-                        <form action="" method="post" novalidate="novalidate">
-                            <div class="form-group">
+
+                            <div  class="col-lg-2">
+                                    <button  id="fech1" type="button" class="btn btn-primary " onclick="mostrar()">Filtrar por rango de fechas</button>
+                                    
+                                </div>
+                                
+                                <form style="margin-top:50px;" action="" method="post" novalidate="novalidate">
+
+                                
+                        
+
+                            <div  class="form-group col-lg-11">
                                 <label for="cc-payment" class="control-label mb-1">Consultar por fecha</label>
                                 <div class="row">
-                                <div class="col-lg-5">
-                                <input id="cc-pament" name="textfe" type="text" class="form-control" aria-required="true" aria-invalid="false" placeholder="<?php echo $hoy; ?> ">                                
+                                <div id="colum" class="col-lg-6">
+                               <input id="cc-pament" name="textfe" type="date" class="form-control" aria-required="true" aria-invalid="false" placeholder="<?php echo $hoy; ?> " value="<?= isset($_POST['textfe']) ? $_POST['textfe'] : '' ?>"> 
+                                                              
                                 </div>
-                                <div class="col-6 col-md-6">
+                                
+                                <div id="cc-pament1" class="col-lg-3">
+                                    
+                                <input  name="textfe1" type="date" class="form-control" aria-required="true" aria-invalid="false" value="<?= isset($_POST['textfe1']) ? $_POST['textfe1'] : '' ?>">                               
+                                </div>
+                                <div class="col-6 col-md-5">
                                 <select name="proyecto" id="select" class="form-control">
+                                    <option value="todos">Todos</option>
                                 <?php
+                               
                                     $sqlx="SELECT * FROM proyectos";
+                                
                                     $resultx = mysqli_query($db,$sqlx);
                                     while($rowx = mysqli_fetch_array($resultx,MYSQLI_ASSOC)){
+         
+if (isset($_POST['proyecto'])) {
+                                        $s = $_POST['proyecto'] ==  $rowx['id'] ? 'selected' : '';
                                     ?>
+
+                                        <option value="<?= $rowx['id']; ?>" <?= $s ?>><?php echo utf8_encode($rowx['name']);  ?></option>
+        
+                                        
+                                   <?php  }else{ ?> ?>
+
                                         <option value="<?= $rowx['id']; ?>"><?php echo utf8_encode($rowx['name']);  ?></option>
                                     <?php 
-                                    } ?>
+                                    } }
+                                    ?>
+                                     
                                 </select>
+                                
                                 </div>
-                                <div class="col-lg-1">
-                                    <button type="submit" class="btn btn-primary ">Buscar</button>
+                                <div  class="col-lg-1">
+                                    <button   type="submit" class="btn btn-primary " >Buscar</button>
+                                    
                                 </div>
-                                </div>
-                            </div>      
+                            </div>
+                        </div>
+                                   
                         </form>
                             <div class="col-lg-12">
                                 <div class="table-responsive table--no-card m-b-30">
                                     <table style="margin-top:20px; " class="table table-borderless table-striped table-earning">
+                                        <button style="margin-bottom: 8px;" class="btn btn-primary" onclick="clicc()">Exportar xlsx</button>
                                         <thead>
                                             <tr>
                                                 <th>ID Cliente</th>
                                                 <th>Vendedor</th>
+                                                
                                                 <th>Proyecto</th>
                                                 <th>Fecha</th>
                                                 <th>Hora</th>
@@ -215,12 +294,38 @@
                                         </thead>
                                         <tbody>
                                             <?php 
+                                            
+                                            $contador=0;
                                             if( isset($_POST['textfe']) || isset($_POST['proyecto'])){
                                                 $confecha= $_POST['textfe'] == "" ? "" : date("Y-m-d", strtotime($_POST['textfe']));
                                                 $id_proyecto = $_POST['proyecto'];
+                                                
+                                                if($_POST['textfe1']!= ""){
+                                                    
+                                                    $confecha1=$_POST['textfe1'];
+                                                  
+                                                   if($id_proyecto=="todos"){
+                                                    $sql="SELECT * FROM llamado_vendedor where created_at between '$confecha' and   '$confecha1'   and tipo_llamado_id = 2";
+
+                                                   }else{
+
+
+
+
+
+                                                    $sql="SELECT * FROM llamado_vendedor where created_at between '$confecha' and   '$confecha1' and proyecto_id = $id_proyecto  and tipo_llamado_id = 2";
+                                                }
+
+                                                }else{
+                                                    if($id_proyecto=="todos"){
+                                                    $sql="SELECT * FROM llamado_vendedor where created_at like '$confecha%'   and tipo_llamado_id = 2";
+
+                                                   }else{
+
                                                 $sql="SELECT * FROM llamado_vendedor where created_at like '$confecha%' and  proyecto_id = $id_proyecto  and tipo_llamado_id = 2";
-                                                                                             
-                                                             
+                                            }
+                                            }
+
                                                 $result = mysqli_query($db,$sql);
                                                 while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                                                     $id_vendedor = $row['vendedor_id'];
@@ -228,7 +333,7 @@
                                                     $fecha=date("d-m-Y", strtotime($row['created_at']));
                                                     $hora=date("h:i:s A", strtotime($row['created_at']));
 
-                                                    $sql1="SELECT name FROM vendedores where  id=$id_vendedor";
+                                                    $sql1="SELECT * FROM vendedores where  id=$id_vendedor";
                                                     $result1 = mysqli_query($db,$sql1);
                                                     $row1 = mysqli_fetch_array($result1,MYSQLI_ASSOC);
 
@@ -238,10 +343,16 @@
                                                     $result2 = mysqli_query($db,$sql2);
                                                     $row2 = mysqli_fetch_array($result2,MYSQLI_ASSOC);
 
+                                                    $sql3="SELECT numcliente FROM llamadas where  cliente_id=$id_cliente";
+                                                    $result3 = mysqli_query($db,$sql3);
+                                                    $row3 = mysqli_fetch_array($result3,MYSQLI_ASSOC);
+                                                    $contador=$contador+1;
+
                                                     ?>
                                                     <tr>      
                                                         <th><?php echo $id_cliente;  ?></th>
                                                         <td><?php echo utf8_encode($row1['name']);  ?></td>
+                                                        
                                                         <td><?php echo utf8_encode($row2['name']);  ?></td>                                                  
                                                         <td><?php echo utf8_encode($fecha);  ?></td>
                                                         <td><?php echo utf8_encode($hora);  ?></td>
@@ -250,35 +361,43 @@
                                             }else{
 
                                             $sql="SELECT * FROM llamado_vendedor where created_at  like '$hoy1%' and tipo_llamado_id = 2";
-
                                             $result = mysqli_query($db,$sql);      
                                             while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                                                 $id_vendedor = $row['vendedor_id'];
-                                                $id_cliente = $row['cliente_id'];
-                                                $fecha=date("d-m-Y", strtotime($row['created_at']));
-                                                $hora=date("h:i:s A", strtotime($row['created_at']));
+                                                    $id_cliente = $row['cliente_id'];
+                                                    $fecha=date("d-m-Y", strtotime($row['created_at']));
+                                                    $hora=date("h:i:s A", strtotime($row['created_at']));
 
-                                                $sql1="SELECT * FROM vendedores where  id=$id_vendedor";
-                                                $result1 = mysqli_query($db,$sql1);
-                                                $row1 = mysqli_fetch_array($result1,MYSQLI_ASSOC);
+                                                    $sql1="SELECT * FROM vendedores where  id=$id_vendedor";
+                                                    $result1 = mysqli_query($db,$sql1);
+                                                    $row1 = mysqli_fetch_array($result1,MYSQLI_ASSOC);
 
-                                                $id_proyecto = $row['proyecto_id'];
+                                                    $id_proyecto = $row['proyecto_id'];
 
-                                                $sql2="SELECT name FROM proyectos where  id=$id_proyecto";
-                                                $result2 = mysqli_query($db,$sql2);
-                                                $row2 = mysqli_fetch_array($result2,MYSQLI_ASSOC);
+                                                    $sql2="SELECT name FROM proyectos where  id=$id_proyecto";
+                                                    $result2 = mysqli_query($db,$sql2);
+                                                    $row2 = mysqli_fetch_array($result2,MYSQLI_ASSOC);
 
-                                                ?>
-                                                <tr>      
-                                                    <th><?php echo $id_cliente;  ?></th>
-                                                    <td><?php echo utf8_encode($row1['name']);  ?></td>
-                                                    <td><?php echo utf8_encode($row2['name']);  ?></td>                                                 
-                                                    <td><?php echo utf8_encode($fecha);  ?></td>
-                                                    <td><?php echo utf8_encode($hora);  ?></td>
-                                                </tr>
+                                                    $sql3="SELECT numcliente FROM llamadas where  cliente_id=$id_cliente";
+                                                    $result3 = mysqli_query($db,$sql3);
+                                                    $row3 = mysqli_fetch_array($result3,MYSQLI_ASSOC);
+                                                    $contador=$contador+1;
+
+                                                    ?>
+                                                    <tr>      
+                                                        <th><?php echo $id_cliente;  ?></th>
+                                                        <td><?php echo utf8_encode($row1['name']);  ?></td>
+                                                        
+                                                        <td><?php echo utf8_encode($row2['name']);  ?></td>                                                 
+                                                        <td><?php echo utf8_encode($fecha);  ?></td>
+                                                        <td><?php echo utf8_encode($hora);  ?></td>
+                                                    </tr>
                                             <?php }} ?>                                            
                                         </tbody>
+                                        <h5 style="color:#f28b0e;">Total de contactos via whatsapp:<?php
+                                    echo "<span style='margin-left:4px'>$contador</span>"; ?></h5>
                                     </table>
+
                                 </div>
                             </div>
                         </div>                     
@@ -339,4 +458,3 @@ $("table").tableExport({
 </body>
 
 </html>
-<!-- end document-->

@@ -11,6 +11,9 @@
       $count = mysqli_num_rows($result);
       $hoy=date("d-m-Y");
       $hoy1=date("Y-m-d");
+      $proyecto=$_POST['proyecto'];
+   $texfe=$_POST['textfe'];
+   $texfe1=$_POST['textfe1'];
 ?>
 <html lang="en">
 
@@ -46,7 +49,38 @@
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
+ <style type="text/css">
+        #cc-pament1{
+            display: none;
+        }
+       
+    </style>
 
+    <script type="text/javascript">
+        
+
+<?php if($texfe1!=""){
+
+    ?>
+window.onload =function busqueda(){
+mostrar(); }<?php } ?>
+
+       
+        function mostrar(){
+document.getElementById("cc-pament1").style.display = 'block';
+   var elemento = document.getElementById("colum");
+    elemento.className = "col-lg-3";
+    
+}
+function clicc(){
+
+ $(".button-default").click();
+document.getElementsByClassName("button-default").click();
+}
+
+
+
+    </script>
 </head>
 
 <body class="animsition">
@@ -56,7 +90,7 @@
             <div class="header-mobile__bar">
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
-                        <a class="logo" href="index.html">
+                        <a class="logo" href="index.php">
                             Panel 
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
@@ -78,13 +112,13 @@
                                 <i class="fas fa-chart-bar"></i>Conversiones</a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                                 <li>
-                                    <a href="llamadas.html">Llamadas</a>
+                                    <a href="llamadas.php">Llamadas</a>
                                 </li>
                                 <li>
                                     <a href="contactos.php">Formulario</a>
                                 </li>
                                 <li>
-                                    <a href="whapp.html">Whatsapp</a>
+                                    <a href="whapp.php">Whatsapp</a>
                                 </li>
                                 
                             </ul>
@@ -99,6 +133,9 @@
                                 </li>
                                 <li>
                                     <a href="vendedores.php">Vendedores</a>
+                                </li>
+                                <li>
+                                    <a href="proyectos.php">Proyectos</a>
                                 </li>
                             </ul>
                         </li>
@@ -149,6 +186,9 @@
                                 <li>
                                     <a href="vendedores.php">Vendedores</a>
                                 </li>
+                                <li>
+                                    <a href="proyectos.php">Proyectos</a>
+                                </li>
                                 
                             </ul>
                         </li>
@@ -178,44 +218,67 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
-                        <form action="" method="post" novalidate="novalidate">
-                                            <div class="form-group">
-                                                <label for="cc-payment" class="control-label mb-1">Consultar por fecha</label>
-                                                <div class="row">
-                                                <div class="col-lg-5">
-                                                <input id="cc-pament" name="textfe" type="text" class="form-control" aria-required="true" aria-invalid="false" placeholder="<?php echo $hoy; ?> ">
+                             <div  class="col-lg-2">
+                                    <button  id="fech1" type="button" class="btn btn-primary " onclick="mostrar()">Filtrar por rango de fechas</button>
+                                    
+                                </div>
+                        <form style="margin-top:50px;" action="" method="post" novalidate="novalidate">
 
-                                                
-                                                </div>
-                                                <div class="col-6 col-md-6">
-                                                    <select name="proyecto" id="select" class="form-control">
-                                                    <?php
-$sqlx="SELECT * FROM proyectos";
-                  
- 
-           
-      $resultx = mysqli_query($db,$sqlx);
-      
-      
-       while($rowx = mysqli_fetch_array($resultx,MYSQLI_ASSOC)){
-                                                        
-                                                        ?>
-                                                        <option value="<?php echo utf8_encode($rowx['id']); ?>"><?php echo utf8_encode($rowx['name']);  ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                    </div>
-                                                <div class="col-lg-1">
-                                                    <button type="submit" class="btn btn-primary ">Buscar</button>
-                                                </div>
-                                                </div>
-                                            </div>
-      
-      
-      </form>
+                                
+                        
+
+                            <div  class="form-group col-lg-11">
+                                <label for="cc-payment" class="control-label mb-1">Consultar por fecha</label>
+                                <div class="row">
+                                <div id="colum" class="col-lg-6">
+                               <input id="cc-pament" name="textfe" type="date" class="form-control" aria-required="true" aria-invalid="false" placeholder="<?php echo $hoy; ?> " value="<?= isset($_POST['textfe']) ? $_POST['textfe'] : '' ?>"> 
+                                                              
+                                </div>
+                                
+                                <div id="cc-pament1" class="col-lg-3">
+                                    
+                                <input  name="textfe1" type="date" class="form-control" aria-required="true" aria-invalid="false" value="<?= isset($_POST['textfe1']) ? $_POST['textfe1'] : '' ?>">                               
+                                </div>
+                                <div class="col-6 col-md-5">
+                                <select name="proyecto" id="select" class="form-control">
+                                    <option value="todos">Todos</option>
+                                <?php
+                               
+                                    $sqlx="SELECT * FROM proyectos";
+                                
+                                    $resultx = mysqli_query($db,$sqlx);
+                                    while($rowx = mysqli_fetch_array($resultx,MYSQLI_ASSOC)){
+         
+if (isset($_POST['proyecto'])) {
+                                        $s = $_POST['proyecto'] ==  $rowx['id'] ? 'selected' : '';
+                                    ?>
+
+                                        <option value="<?= $rowx['id']; ?>" <?= $s ?>><?php echo utf8_encode($rowx['name']);  ?></option>
+        
+                                        
+                                   <?php  }else{ ?> ?>
+
+                                        <option value="<?= $rowx['id']; ?>"><?php echo utf8_encode($rowx['name']);  ?></option>
+                                    <?php 
+                                    } }
+                                    ?>
+                                     
+                                </select>
+                                
+                                </div>
+                                <div  class="col-lg-1">
+                                    <button   type="submit" class="btn btn-primary " >Buscar</button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                                   
+                        </form>
       </div>
                             <div class="col-lg-12">
                                 <div class="table-responsive table--no-card m-b-30">
                                     <table style="margin-top:20px; " class="table table-borderless table-striped table-earning">
+                                      <button style="margin-bottom: 8px;" class="btn btn-primary" onclick="clicc()">Exportar xlsx</button>
                                         <thead>
                                             <tr>
 
@@ -232,14 +295,31 @@ $sqlx="SELECT * FROM proyectos";
                                         </thead>
                                         <tbody>
                                             <?php 
+                                            $contador=0;
 
     if( isset($_POST['textfe']) )
 {
   $confecha= $_POST['textfe'] == "" ? "" : date("Y-m-d", strtotime($_POST['textfe']));
-  $proyecto = $_POST['proyecto'];           
+  $proyecto = $_POST['proyecto'];    
+  if($_POST['textfe1']!= ""){
+    $confecha1=$_POST['textfe1'];
+    if ($proyecto=="todos") {
+        $sql="SELECT * FROM datos_contacto where date  between '$confecha ' and  '$confecha1'";
+    }else{
+                                              
+$sql="SELECT * FROM datos_contacto where date  between '$confecha ' and  '$confecha1'and id_proyecto='$proyecto'";
+}
+
+  }else{
+
+    if ($proyecto=="todos") {
+
+$sql="SELECT * FROM datos_contacto where date  like '$confecha%'";
+      }else{
 $sql="SELECT * FROM datos_contacto where date  like '$confecha%' and id_proyecto='$proyecto'";
-                  
- 
+
+      }            
+ }
            
       $result = mysqli_query($db,$sql);
       
@@ -256,6 +336,7 @@ $sql="SELECT * FROM datos_contacto where date  like '$confecha%' and id_proyecto
 
 $fecha=date("d-m-Y", strtotime($row['date']));
 $hora=date("h:i:s A", strtotime($row['date']));
+$contador=$contador+1;
     ?>
     <tr>
       
@@ -292,6 +373,7 @@ $hora=date("h:i:s A", strtotime($row['date']));
 
 $fecha=date("d-m-Y", strtotime($row['date']));
 $hora=date("h:i:s A", strtotime($row['date']));
+$contador=$contador+1;
 
     ?>
     <tr>
@@ -311,6 +393,8 @@ $hora=date("h:i:s A", strtotime($row['date']));
    <?php }}?>
                                             
                                         </tbody>
+                                        <h5 style="color:#f28b0e;">Total de contactos formulario:<?php
+                                    echo "<span style='margin-left:4px'>$contador</span>"; ?></h5>
                                     </table>
                                 </div>
                             </div>

@@ -45,7 +45,7 @@
             <div class="header-mobile__bar">
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
-                        <a class="logo" href="index.html">
+                        <a class="logo" href="index.php">
                             Panel 
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
@@ -88,6 +88,9 @@
                                 </li>
                                 <li>
                                     <a href="vendedores.php">Vendedores</a>
+                                </li>
+                                <li>
+                                    <a href="proyectos.php">Proyectos</a>
                                 </li>
                             </ul>
                         </li>
@@ -137,6 +140,9 @@
                                 </li>
                                 <li>
                                     <a href="vendedores.php">Vendedores</a>
+                                </li>
+                                <li>
+                                    <a href="proyectos.php">Proyectos</a>
                                 </li>
                                 
                             </ul>
@@ -196,8 +202,9 @@
                                               $res = mysqli_query($db,$sql);
 
                                               while ($fila = mysqli_fetch_array($res)) {
+                                                $class = $fila['habilitado'] == 0 ? 'table-danger' : '';
                                                 ?>
-                                                  <tr class="tr-shadow">
+                                                  <tr class="tr-shadow <?= $class ?>">
                                                     <td scope="row"><?= $fila['id']?></td>
                                                     <td><?= $fila['name']?></td>
                                                     <td><?= $fila['telefono']?></td>
@@ -210,9 +217,15 @@
                                                       <a href="editarvendedor.php?id=<?=$fila['id']?>" ><button class="item" data-toggle="tooltip" data-placement="top" title="Editar">
                                                             <i class="zmdi zmdi-edit"></i>
                                                       </button></a>
-                                                      <a href="eliminarvendedor.php?id=<?=$fila['id']?>"><button class="item" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
+                                                      <?php if($fila['habilitado'] == 0 ): ?>
+                                                      <a href="#" onClick="if(confirm('Esta seguro de habilitar el vendedor?')) eliminarvendedor(<?=$fila['id']?>,1);"><button class="item" data-toggle="tooltip" data-placement="top" title="Habilitar">
+                                                            <i class="zmdi zmdi-check"></i>
+                                                        </button></a>
+                                                      <?php else :?>
+                                                       <a href="#" onClick="if(confirm('Esta seguro de Deshabilitar el vendedor?')) eliminarvendedor(<?=$fila['id']?>,0);"><button class="item" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button></a>
+                                                      <?php endif;?>
                                                       </div>
                                                     </td>
                                                   </tr>         
@@ -228,7 +241,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
-                                    <p>Derechos reservados a Tecnicom soluciones & Datos <a href="http://www.tecnicom.pe">Tecnicom soluciones & Datos</a>.</p>
+                                    <p>Derechos reservados a Tecnicom soluciones & Datos <a href="http://www.tecnicom.pe>Tecnicom soluciones & Datos"</a>.</p>
                                 </div>
                             </div>
                         </div>
@@ -262,6 +275,6 @@
 
     <!-- Main JS-->
     <script src="js/main.js"></script>
-
+    <script src="js/extra.js"></script>
 </body>
 </html>

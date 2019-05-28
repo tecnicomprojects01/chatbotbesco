@@ -12,15 +12,6 @@ class Bothook extends CI_Controller {
 		redirect('https://www.google.com.pe');
 	}
 
-	public function normaliza ($cadena){
-	    $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
-	    $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
-	    $cadena = utf8_decode($cadena);
-	    $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
-	    $cadena = strtolower($cadena);
-	    return utf8_encode($cadena);
-	}
-
 	public function get_hora(){
 		return date('G');
 	}
@@ -54,7 +45,7 @@ class Bothook extends CI_Controller {
 
 		$challange = $_REQUEST['hub_challenge'];
 
-		$accessToken = 'EAAdBn252UPwBAPBhECZCOa2RKYJZCf8kIljdn6o5eJy32oAvLtq1ZCOP5v9blgpoVVO5GrXydVhWq6hdw4ZCEjHvZCupQ2ZA1CyC87VnP0icG2dAm2jMmHEcUEuRJeLInXBznZBcXPo7ZAt4g3nyKvc1omkYnrq5cLHi8a7fIORkI519a221IWWW';
+		$accessToken = 'EAAdBn252UPwBAINKNLB5JKSGKopwZBfZC3bIaTYUl8CiaT0qMoTgZBiN9LTwGE9AVlyjIp4AKeazXuZAHWMqK74dRyAjM351zmCtFZA7atloZCqAHHGoS1ZAo23rdyNL14q2P8Tb3hKyzMozsCyZBbzXMxYfVWkh3Hg8zas7d5ZBCidEpNh6ZCrmge';
 
 		$this->fbbot->setHubVerifyToken($hubVerifyToken);
 
@@ -106,12 +97,11 @@ class Bothook extends CI_Controller {
 
 		//Si el usuario escribe lima
 
-		$nombre = $this->get_nombre($cliente['fb_id']);
-		
 		if(preg_match("/Empezar/i",$messageText)){
 
 			//Obtener nombre de la persona
 
+			$nombre = $this->get_nombre($cliente['fb_id']);
 
 			$mensaje_inicio = MENSAJE_INICIO;
 
@@ -126,23 +116,23 @@ class Bothook extends CI_Controller {
 		//Frases comunes
 
 		if(preg_match("/buenos dias/i",$messageText)){
-			$this->fbbot->sendMessage($cliente['fb_id'],'texto',array('texto' => 'Buenos días '.$nombre));
+			$this->fbbot->sendMessage($cliente['fb_id'],'texto',array('texto' => 'Buenos días'));
 		}
 
 		if(preg_match("/buen dia/i",$messageText)){
-			$this->fbbot->sendMessage($cliente['fb_id'],'texto',array('texto' => 'Buenos días '.$nombre));
+			$this->fbbot->sendMessage($cliente['fb_id'],'texto',array('texto' => 'Buenos días'));
 		}
 
 		if(preg_match("/buenas noches/i",$messageText)){
-			$this->fbbot->sendMessage($cliente['fb_id'],'texto',array('texto' => 'Buenas noches '.$nombre));
+			$this->fbbot->sendMessage($cliente['fb_id'],'texto',array('texto' => 'Buenas noches'));
 		}
 
 		if(preg_match("/buenas tardes/i",$messageText)){
-			$this->fbbot->sendMessage($cliente['fb_id'],'texto',array('texto' => 'Buenas tardes '.$nombre));
+			$this->fbbot->sendMessage($cliente['fb_id'],'texto',array('texto' => 'Buenas tardes'));
 		}
 
 		if(preg_match("/Hola/i",$messageText)){
-			$this->fbbot->sendMessage($cliente['fb_id'],'texto',array('texto' => 'Hola '.$nombre ));
+			$this->fbbot->sendMessage($cliente['fb_id'],'texto',array('texto' => 'Hola'));
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////
@@ -219,12 +209,8 @@ class Bothook extends CI_Controller {
 		$proyectos = applib::get_all('*',applib::$proyectos_table,array('status' => 1));
 
 		foreach ($proyectos as $p) {
-			
-			$nombre = $this->normaliza($p['name']);
-			$distrito = $this->normaliza($p['ubicacion']);
-			$searchword = str_ireplace(" ", "|", $nombre); //Reemplaza los espacios en blanco por separadores |
-			$searchword2 = str_ireplace(" ", "|", $distrito);		
-			if(preg_match("/\b$searchword\b/i", $messageText) || preg_match("/\b$searchword2\b/i", $messageText)){ //Intenta hacer match con cualquier palabra del nombre del proyecto
+						
+			if(preg_match("/".$p['name']."/i", $messageText)){
 				
 				//Si se encontró el nombre del proyecto se debbe asignar el lugar y el proyecto al usuario
 
@@ -244,7 +230,7 @@ class Bothook extends CI_Controller {
 
 	        	//Guardar mensaje que se le envia al usuario
 
-	        	$texto = $p['descripcion']." ".$p['desde_precio']." Sujeto a Disponibilidad"; //Descripcion y precio del proyecto
+	        	$texto = $p['descripcion']." ".$p['desde_precio']; //Descripcion y precio del proyecto
 
 	        	$mensaje_user = $texto.' (Bloque desea saber algo mas)';
 
@@ -274,11 +260,11 @@ class Bothook extends CI_Controller {
 
 					//Obtener respuesta de la cualidad para este proyecto
 
-					if($p['id'] != 2 && $p['id'] != 3){
+					if($p['id'] != 2){
 						$texto = applib::get_field(applib::$res_cualidades_table,array('cualidad_id' => $p['id'],'proyecto_id' => $cliente['proyecto_id']),'respuesta');
 					} 
 					else{
-						$texto = 'Imagen de referencia';
+						$texto = '(Imagenes de metraje)';
 					}
 
 					//Guardar mensaje que envió el usuario
@@ -297,7 +283,7 @@ class Bothook extends CI_Controller {
 
 	        		//Enviar mensaje a facebook
 
-	        		if($p['id'] != 2 && $p['id'] != 3){
+	        		if($p['id'] != 2){
 
 	        			$this->fbbot->sendMessage($cliente['fb_id'],'texto',array('texto' => $texto));
 
@@ -305,12 +291,8 @@ class Bothook extends CI_Controller {
 	        			exit;
 	        		}
 	        		else{
-	        			if($p['id'] == 2){
 
 	        			$elementos = $this->get_metraje($cliente['proyecto_id'],$key);
-	        		}else{
-	        			$elementos = $this->get_areasimg($cliente['proyecto_id'],$key);
-	        		}
 
 	        			$this->fbbot->sendMessage($cliente['fb_id'],'imagen',array('elementos' => $elementos));
 
@@ -453,13 +435,13 @@ class Bothook extends CI_Controller {
 
 		$botones = [];
 
-		if ($this->get_hora() >= 9 && $this->get_hora() < 21) {
+		//if ($this->get_hora() >= "9" && $this->get_hora() <= "21") {
 			$botones[] = [
            		"type"					=> "web_url",
 				"url" 					=> 'https://chat.tecnicom.pe/index.php/sender/escribir_whatsapp/'.$proyecto['seo'].'/L5437788/'.$cliente['id'],
 				"title"					=> "Escribir a WhatsApp"
         	];
-		}
+		//}
 
         $botones[] = [
            	"type"					=> "web_url",
@@ -468,7 +450,7 @@ class Bothook extends CI_Controller {
 			'messenger_extensions' 	=> true
         ];
 
-        if($proyecto['aceptar_llamadas'] == 1 && ($this->get_hora() >= 10 && $this->get_hora() < 17)){
+        if($proyecto['aceptar_llamadas'] == 1 ){
 
         	$botones[] = [
            		"type"					=> "web_url",
@@ -486,7 +468,6 @@ class Bothook extends CI_Controller {
 
 	private function get_metraje($id,$key){
 
-
 		//Cargar libreria
 
 		$data_empresa = empresas::get_empresa($key);
@@ -496,42 +477,6 @@ class Bothook extends CI_Controller {
 		//Obtener metraje segun el proyecto
 
 		$metrajes = applib::get_all('*','metrajes',array('proyecto_id' => $id,'status' => 1));
-
-		//Cargar metrajes
-
-		$elements = [];
-
-		foreach ($metrajes as $p) {
-			
-			$elements[] =  [
-               "title"				 	=> $p['name'],
-                "image_url" 			=> $p['url_imagen'],
-                "subtitle"  			=> $p['descripcion'],
-                "default_action" 		=>  [
-                  "type" 					=> "web_url",
-                  "url" 					=> $p['url_web'],
-                  "messenger_extensions" 	=> true,
-                  "webview_height_ratio" 	=> "tall",
-                  "fallback_url" 			=> $p['url_web'],
-                ]
-            ];
-		}
-
-		return $elements;
-	}
-
-	private function get_areasimg($id,$key){
-
-
-		//Cargar libreria
-
-		$data_empresa = empresas::get_empresa($key);
-
-		$this->load->library('applib',array('database' => $data_empresa['database']));
-
-		//Obtener metraje segun el proyecto
-
-		$metrajes = applib::get_all('*','areas',array('proyecto_id' => $id,'status' => 1));
 
 		//Cargar metrajes
 
@@ -589,7 +534,7 @@ class Bothook extends CI_Controller {
 	function boton_empezar(){
 		 
 		//API URL
-		$url = 'https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAAdBn252UPwBAPBhECZCOa2RKYJZCf8kIljdn6o5eJy32oAvLtq1ZCOP5v9blgpoVVO5GrXydVhWq6hdw4ZCEjHvZCupQ2ZA1CyC87VnP0icG2dAm2jMmHEcUEuRJeLInXBznZBcXPo7ZAt4g3nyKvc1omkYnrq5cLHi8a7fIORkI519a221IWWW';
+		$url = 'https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAAdBn252UPwBAJPH8wVIL7bniEExp2O09F0YJ8C8JfBRLlvgUZAy9hqGPrZCJ1CvIz7cfktJmSGlzMxJ8NuSCh4VCT9JQg22ZCDEhlHb9BbEIDvWjOenV1lzVLn2xUshJAquXZBFdqLNnBmEeMQEKMnvdxShR27EMHCZAQNZBVkQZDZD';
 
 		//create a new cURL resource
 		$ch = curl_init($url);
@@ -624,7 +569,7 @@ class Bothook extends CI_Controller {
 	private function get_nombre($id){
 
 		//API URL
-		$url = 'https://graph.facebook.com/'.$id.'?fields=first_name,last_name,profile_pic&access_token=EAAdBn252UPwBAPBhECZCOa2RKYJZCf8kIljdn6o5eJy32oAvLtq1ZCOP5v9blgpoVVO5GrXydVhWq6hdw4ZCEjHvZCupQ2ZA1CyC87VnP0icG2dAm2jMmHEcUEuRJeLInXBznZBcXPo7ZAt4g3nyKvc1omkYnrq5cLHi8a7fIORkI519a221IWWW';
+		$url = 'https://graph.facebook.com/'.$id.'?fields=first_name,last_name,profile_pic&access_token=EAAdBn252UPwBAJPH8wVIL7bniEExp2O09F0YJ8C8JfBRLlvgUZAy9hqGPrZCJ1CvIz7cfktJmSGlzMxJ8NuSCh4VCT9JQg22ZCDEhlHb9BbEIDvWjOenV1lzVLn2xUshJAquXZBFdqLNnBmEeMQEKMnvdxShR27EMHCZAQNZBVkQZDZD';
 
 		//create a new cURL resource
 		$ch = curl_init($url);

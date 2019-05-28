@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-
 <?php
    include('session.php');
-   $hoy = date('d-m-Y');
-   $ho1 = date('Y-m-d');
 ?>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -23,7 +20,7 @@
     <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
     <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
     <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-
+    <link rel="SHORTCUT ICON" href="https://www.tecnicom.pe/icon-tecnicom.ico">
     <!-- Bootstrap CSS-->
     <link href="vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
@@ -38,11 +35,7 @@
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
-<style type="text/css">
-    .fech{
-        display:none;
-    }
-</style>
+
 </head>
 
 <body class="animsition">
@@ -52,7 +45,7 @@
             <div class="header-mobile__bar">
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
-                        <a class="logo" href="index.html">
+                        <a class="logo" href="index.php">
                             Panel 
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
@@ -67,14 +60,17 @@
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="has-sub">
+                            <a href="inicio.php"><i class="fas fa-home"></i>Inicio</a>
+                        </li>
+                        <li class="has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-chart-bar"></i>Conversiones</a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                               <li>
+                                 <li>
                                     <a href="llamadas.php">Llamadas</a>
                                 </li>
                                 <li>
-                                    <a href="contactos.php">Contacto</a>
+                                    <a href="contactos.php">Formulario</a>
                                 </li>
                                 <li>
                                     <a href="whapp.php">Whatsapp</a>
@@ -87,11 +83,14 @@
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-desktop"></i>Modificaciones</a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                 <li>
+                                <li>
                                     <a href="edit.php">Mensajeria</a>
                                 </li>
                                 <li>
                                     <a href="vendedores.php">Vendedores</a>
+                                </li>
+                                <li>
+                                    <a href="proyectos.php">Proyectos</a>
                                 </li>
                             </ul>
                         </li>
@@ -111,15 +110,18 @@
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="active has-sub">
+                        <li class="has-sub">
+                            <a href="inicio.php"><i class="fas fa-home"></i>Inicio</a>
+                        </li>
+                        <li class="has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-tachometer-alt"></i>Conversiones</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                <li>
+                                 <li>
                                     <a href="llamadas.php">Llamadas</a>
                                 </li>
                                 <li>
-                                    <a href="contactos.php">Contacto</a>
+                                    <a href="contactos.php">Formulario</a>
                                 </li>
                                 <li>
                                     <a href="whapp.php">Whatsapp</a>
@@ -129,7 +131,7 @@
                         </li>
                         
                         
-                        <li class="has-sub">
+                        <li class="active has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-desktop"></i>Modificaciones</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -138,6 +140,9 @@
                                 </li>
                                 <li>
                                     <a href="vendedores.php">Vendedores</a>
+                                </li>
+                                <li>
+                                    <a href="proyectos.php">Proyectos</a>
                                 </li>
                                 
                             </ul>
@@ -155,7 +160,7 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="header-wrap">
-                            
+                            <button onClick="window.location.href = 'logout.php'" type="button" class="btn btn btn-warning">Salir</button>
                             
                         </div>
                     </div>
@@ -168,96 +173,94 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col">
-                                <h3 class="title-5 m-b-35">Consultas via llamada</h3>
-                            </div>
-                        </div>
-                        <div class="row">
-                        <form action="" method="post" novalidate="novalidate">
-                            <div style="display: none;" id="fech" class="fech form-group">
-                                <label for="cc-payment" class="control-label mb-1">Consultar por fecha</label>
-                                <div class="row">
-                                <div class="col-lg-6">
-                                <input id="cc-pament" name="textfe" type="text" class="form-control" aria-required="true" aria-invalid="false" value="<?php echo $hoy; ?> ">
-                                
+                            <div class="col-md-12">
+                                <!-- DATA TABLE -->
+                                <h3 class="title-5 m-b-35">Proyectos</h3>
+                                <div class="table-data__tool">
+                                    <div class="table-data__tool-right">
+                                        <a href="nuevoproyecto.php"><button class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                            <i class="zmdi zmdi-plus"></i>Nuevo Proyecto</button></a>
+                                    </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <button type="submit" class="btn btn-primary ">Buscar</button>
-                                </div>
-                                </div>
-                            </div>      
-                        </form>
-                            <div class="col-lg-12">
-                                <button class="button-default">Exporta xlsx</button> 
-                                <div class="table-responsive table--no-card m-b-30">
-
-                                    <table style="margin-top:20px; " class="table table-borderless table-striped table-earning">
-                                        <thead>
-                                            <tr>
-                                                <th>ID Cliente</th>
-                                                <th>Vendedor</th>
-                                                <th>Telefono</th>
-                                                <th>Fecha</th>
-                                                <th>Hora</th>
+                                <div style="overflow-x:auto;" class="table-responsive table-responsive-data2">
+                                    <table class="table table-data2 col-md-12">
+                                      <thead>
+                                                                                            <tr>
+                                                  <th scope="col">#</th>
+                                                  <th scope="col">Nombre</th>
+                                                  <th scope="col">Descripcion</th>
+                                                
+                                                  <th scope="col">Ubicacion</th>
+                                                  <th scope="col">Banco</th>
+                                                 
+                                                   <th scope="col">Precio</th>
+                                                    <th scope="col">Llamadas</th>
+                                                     <th scope="col">Whatsapp</th>
+                                                  <th scope="col">Opciones</th>
+                                                  
+                                                
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php 
-                                            if( isset($_POST['textfe']) ){
-                                                $confecha=date("Y-m-d", strtotime($_POST['textfe']));
-                                                             
-                                                $sql="SELECT * FROM llamado_vendedor where created_at  like '$confecha%' and tipo_llamado_id = 1";
-                                                $result = mysqli_query($db,$sql);
-                                                while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                                                    $id_vendedor = $row['vendedor_id'];
-                                                    $id_cliente = $row['cliente_id'];
-                                                    $fecha=date("d-m-Y", strtotime($row['created_at']));
-                                                    $hora=date("h:i:s A", strtotime($row['created_at']));
+                                              mysqli_query($db,"SET NAMES 'utf8'");  
+                                              $sql = "SELECT * FROM proyectos";
+                                              $res = mysqli_query($db,$sql);
 
-                                                    $sql1="SELECT * FROM vendedores where  id=$id_vendedor";
-                                                    $result1 = mysqli_query($db,$sql1);
-                                                    $row1 = mysqli_fetch_array($result1,MYSQLI_ASSOC);
+                                              while ($fila = mysqli_fetch_array($res)) {
+                                                $class = $fila['habilitado'] == 0 ? 'table-danger' : '';
+                                                if($fila['aceptar_llamadas']==1){
+                                                    $llamadas="Si";
+                                                }else{
+                                                    $llamadas="No";
+                                                }
+                                                  if($fila['aceptar_whap']==1){
+                                                    $whapp="Si";
+                                                }else{
+                                                    $whapp="No";
+                                                }
+                                                ?>
+                                                  <tr class="tr-shadow">
+                                                    <td scope="row"><?= $fila['id']?></td>
+                                                    <td><?= $fila['name']?></td>
+                                                    <td><?= $fila['descripcion']?></td>
 
-                                                    ?>
-                                                    <tr>      
-                                                        <th><?php echo $id_cliente;  ?></th>
-                                                        <td><?php echo utf8_encode($row1['name']);  ?></td>
-                                                        <td><?php echo utf8_encode($row['telefono']);  ?></td>  <td>
-                                                        <td><?php echo utf8_encode($row['telefono']);  ?></td>                                                
-                                                        <td><?php echo utf8_encode($fecha);  ?></td>
-                                                        <td><?php echo utf8_encode($hora);  ?></td>
-                                                    </tr>
-                                            <?php } 
-                                            }else{
 
-                                            $sql="SELECT * FROM llamado_vendedor where created_at  like '$hoy1%' and tipo_llamado_id = 1";
-                                            $result = mysqli_query($db,$sql);      
-                                            while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
-                                                $id_vendedor = $row['vendedor_id'];
-                                                    $id_cliente = $row['cliente_id'];
-                                                    $fecha=date("d-m-Y", strtotime($row['created_at']));
-                                                    $hora=date("h:i:s A", strtotime($row['created_at']));
+                                                    <td><?= $fila['ubicacion']?></td>
+                                                    <td><?= $fila['banco']?></td>
 
-                                                    $sql1="SELECT * FROM vendedores where  id=$id_vendedor";
-                                                    $result1 = mysqli_query($db,$sql1);
-                                                    $row1 = mysqli_fetch_array($result1,MYSQLI_ASSOC);
 
-                                                    ?>
-                                                    <tr>      
-                                                        <th><?php echo $id_cliente;  ?></th>
-                                                        <td><?php echo utf8_encode($row1['name']);  ?></td>
-                                                        <td><?php echo utf8_encode($row1['telefono']);  ?></td>                                                 
-                                                        <td><?php echo utf8_encode($fecha);  ?></td>
-                                                        <td><?php echo utf8_encode($hora);  ?></td>
-                                                    </tr>
-                                            <?php }} ?>                                            
+    <td><?= $fila['desde_precio']?></td>
+                                                         <td><?= $llamadas?></td>
+                                                         <td><?= $whapp?></td>
+                                                
+                                                    <td>
+                                                      <div class="table-data-feature">
+                                                      
+                                                      <a href="editarproyecto.php?id=<?=$fila['id']?>" ><button class="item" data-toggle="tooltip" data-placement="top" title="Editar">
+                                                            <i class="zmdi zmdi-edit"></i>
+                                                      </button></a>
+                                                      <?php if($fila['status'] == 0 ): ?>
+                                                      <a href="#" onClick="if(confirm('Esta seguro de habilitar el proyecto?')) eliminarproyecto(<?=$fila['id']?>,1);"><button class="item" data-toggle="tooltip" data-placement="top" title="Habilitar">
+                                                            <i class="zmdi zmdi-check"></i>
+                                                        </button></a>
+                                                      <?php else :?>
+                                                       <a href="#" onClick="if(confirm('Esta seguro de Deshabilitar el proyecto?')) eliminarproyecto(<?=$fila['id']?>,0);"><button class="item" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
+                                                            <i class="zmdi zmdi-delete"></i>
+                                                        </button></a>
+                                                      <?php endif;?>
+                                                      </div>
+                                                    </td>
+                                                  </tr>         
+                                                <?php
+                                              }
+                                            ?>                                            
                                         </tbody>
                                     </table>
                                 </div>
+                                <!-- END DATA TABLE -->
                             </div>
-                        </div>                     
-                        </div>
-                        </div>
+                        </div>                            
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
@@ -268,11 +271,29 @@
                     </div>
                 </div>
             </div>
-            <!-- END MAIN CONTENT-->
-            <!-- END PAGE CONTAINER-->
         </div>
 
     </div>
+    <script type="text/javascript">
+        function eliminarproyecto(vid,opc){
+    $.ajax({
+        type: 'POST',
+        url: 'eleminarproyecto.php',
+        data: {id: vid, op: opc},
+
+        success: function (data) {
+          var json = JSON.parse(data);
+          alert(json.mensaje);
+
+        },
+        error: function () {
+          console.log('Ocurrio un error por favor intente nuevamente');
+        }
+    })
+  return false;
+   location.reload();
+}
+    </script>
 
     <!-- Jquery JS-->
     <script src="vendor/jquery-3.2.1.min.js"></script>
@@ -297,7 +318,6 @@
 
     <!-- Main JS-->
     <script src="js/main.js"></script>
-
+    <script src="js/extra.js"></script>
 </body>
-
 </html>
