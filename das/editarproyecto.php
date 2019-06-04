@@ -4,9 +4,11 @@
 
    if (isset($_POST['name']) && isset($_POST['telefono']) && isset($_POST['cargos'])) {
      $name = $_POST['name'];
+     $departamento = $_POST['departamento'];
      $telefono = $_POST['telefono'];
      $cargos = $_POST['cargos'];
       $precio = $_POST['precio'];
+
        $llamada = $_POST['llamada'];
         $whap = $_POST['whap'];
         if($llamada!=1){
@@ -22,6 +24,7 @@
 
      $sql1 = "UPDATE proyectos SET
           name = '$name',
+          departamento_id = '$departamento',
           descripcion = '$telefono',
           ubicacion = '$cargos',
            aceptar_llamadas='$llamada',
@@ -29,207 +32,51 @@
           desde_precio='$precio'
 
           WHERE id = ".$id;
+          
+          if (isset($_POST['dormi'])){
+
+            $dormitorios=$_POST['dormi'];
+ 
+     $sql2 = "UPDATE respuestas_cualidades SET
+          respuesta = '$dormitorios'
+        
+
+          WHERE proyecto_id ='$id' AND cualidad_id='1'";
+
+          }
+          if (isset($_POST['ate1'])){
+
+            $atenea=$_POST['ate1'];
+
+
+     $sql3 = "UPDATE respuestas_cualidades SET
+          respuesta = '$atenea'          
+          WHERE proyecto_id = '$id' AND cualidad_id='6'";
+
+          }
+     $precio = "Desde: ".$precio.", sujeto a diponibilidad";
+     $sql4 = "UPDATE respuestas_cualidades SET
+          respuesta = '$precio'
+          WHERE proyecto_id = '$id' AND cualidad_id='9'";
+
      
      if (mysqli_query($db,$sql1)) {
-    
-        require dirname(__FILE__).'/extras/phpmailer/phpmailer/src/Exception.php';
-        require dirname(__FILE__).'/extras/phpmailer/phpmailer/src/PHPMailer.php';
-
-        $mail = new PHPMailer\PHPMailer\PHPMailer();
-
-        $array = array("darwinvaleroAAreb@gmail.com","codigo2AA@tecnicom.pe");
-
-        $asunto = '[Notificación] - Cambios datos de vendedor'; //Asunto
-
-        $content = "";
-
-        $content .= "El cliente ha modificado informacion personal del vendedor ".$name."<br>";
-        $content .= "Telefono: ". $telefono."<br>";
-        $content .= "Se debe Actualizar la cola";
-
-        $mail->setFrom('devm4648AA@gmail.com', 'Besco cambios'); // Nuestro correo electrónico
-        $mail->IsHTML(true); // Indicamos que el email tiene formato HTML                      
-        $mail->Subject = $asunto; // El asunto del email
-        $mail->Body = $content; // El cuerpo de nuestro mensaje
-
-        // Recorremos nuestro array de e-mails.
-
-        foreach ($array as $email) {
-          $mail->AddAddress($email); // Cargamos el e-mail destinatario a la clase PHPMailer
-          $mail->Send(); // Realiza el envío =)
-          $mail->ClearAddresses(); // Limpia los "Address" cargados previamente para volver a cargar uno.
+        if (mysqli_query($db,$sql2)) {
+          if (mysqli_query($db,$sql3)) {
+            if(mysqli_query($db,$sql4)) {
+              ?>
+              <script>
+                alert("Proyecto Actualizado");
+                window.location = 'proyectos.php';
+              </script>
+              <?php
+            }
+          }
         }
-
-        ?>
-        <script>
-          alert("Proyecto Actualizado");
-          window.location = 'proyectos.php';
-        </script>
-        <?php
-
-     }
-  }
-
+      }
+    }
+    include 'header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <!-- Required meta tags-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
-
-    <!-- Title Page-->
-    <title>Dashboard</title>
-
-    <!-- Fontfaces CSS-->
-    <link href="css/font-face.css" rel="stylesheet" media="all">
-    <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
-    <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-    <link rel="SHORTCUT ICON" href="https://www.tecnicom.pe/icon-tecnicom.ico">
-    <!-- Bootstrap CSS-->
-    <link href="vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
-
-    <!-- Vendor CSS-->
-    <link href="vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
-    <link href="vendor/wow/animate.css" rel="stylesheet" media="all">
-    <link href="vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
-    <link href="vendor/slick/slick.css" rel="stylesheet" media="all">
-    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-
-    <!-- Main CSS-->
-    <link href="css/theme.css" rel="stylesheet" media="all">
-
-</head>
-
-<body class="animsition">
-    <div class="page-wrapper">
-        <!-- HEADER MOBILE-->
-        <header class="header-mobile d-block d-lg-none">
-            <div class="header-mobile__bar">
-                <div class="container-fluid">
-                    <div class="header-mobile-inner">
-                        <a class="logo" href="index.html">
-                            Panel 
-                        </a>
-                        <button class="hamburger hamburger--slider" type="button">
-                            <span class="hamburger-box">
-                                <span class="hamburger-inner"></span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <nav class="navbar-mobile">
-                <div class="container-fluid">
-                    <ul class="navbar-mobile__list list-unstyled">
-                        <li class="has-sub">
-                            <a href="inicio.php"><i class="fas fa-home"></i>Inicio</a>
-                        </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-chart-bar"></i>Conversiones</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="llamadas.php">Llamadas</a>
-                                </li>
-                                <li>
-                                    <a href="contactos.php">Formulario</a>
-                                </li>
-                                <li>
-                                    <a href="whapp.php">Whatsapp</a>
-                                </li>
-                                
-                            </ul>
-                        </li>
-                        
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-desktop"></i>Modificaciones</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="edit.php">Mensajeria</a>
-                                </li>
-                                <li>
-                                    <a href="vendedores.php">Vendedores</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
-        <!-- END HEADER MOBILE-->
-
-        <!-- MENU SIDEBAR-->
-        <aside class="menu-sidebar d-none d-lg-block">
-            <div class="logo">
-                <a href="#">
-                    <img src="images/icon/logo.png" alt="Cool Admin" />
-                </a>
-            </div>
-            <div class="menu-sidebar__content js-scrollbar1">
-                <nav class="navbar-sidebar">
-                    <ul class="list-unstyled navbar__list">
-                        <li class="has-sub">
-                            <a href="inicio.php"><i class="fas fa-home"></i>Inicio</a>
-                        </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-tachometer-alt"></i>Conversiones</a>
-                            <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                <li>
-                                    <a href="llamadas.php">Llamadas</a>
-                                </li>
-                                <li>
-                                    <a href="contactos.php">Formulario</a>
-                                </li>
-                                <li>
-                                    <a href="whapp.php">Whatsapp</a>
-                                </li>
-                            </ul>
-                        </li>
-                        
-                        
-                        <li class="active has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-desktop"></i>Modificaciones</a>
-                            <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                <li>
-                                    <a href="edit.php">Mensajeria</a>
-                                </li>
-                                <li>
-                                    <a href="vendedores.php">Vendedores</a>
-                                </li>
-                                
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </aside>
-        <!-- END MENU SIDEBAR-->
-
-        <!-- PAGE CONTAINER-->
-        <div class="page-container">
-            <!-- HEADER DESKTOP-->
-            <header class="header-desktop">
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="header-wrap">
-                            
-                           <button onClick="window.location.href = 'logout.php'" type="button" class="btn btn btn-warning">Salir</button> 
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <!-- HEADER DESKTOP-->
             <!-- MAIN CONTENT-->
             <div class="main-content">
                 <div class="section__content section__content--p30">
@@ -256,6 +103,29 @@
                                             <label for="telefono" class=" form-control-label">Descripcion</label>
                                             <textarea type="text" name="telefono" placeholder="123456789" class="form-control" value="" required><?=  $fila['descripcion']?></textarea> 
                                         </div>
+                                          <div class="form-group">
+                                            <label for="cargos" class=" form-control-label">Departamento</label>
+                                            <select name="departamento">
+                                                <?php
+                                                $idpp=$fila['departamento_id'];
+                                                   $sqlx = "SELECT * FROM ubdepartamento WHERE id=".$idpp;
+                                      $resx = mysqli_query($db,$sqlx);
+                                      $filax = mysqli_fetch_array($resx);
+
+                                                  ?>
+                                                <option value="<?= $fila['departamento_id']?>"><?= $filax['departamento']?></option>
+                                                <?php
+                                      mysqli_query($db,"SET NAMES 'utf8'");  
+                                      $sqlc = "SELECT * FROM ubdepartamento";
+                                      $resc = mysqli_query($db,$sqlc);
+                                      while ($filac = mysqli_fetch_array($resc)) {
+                                        $dept=$filac['departamento'];
+
+                                    ?>
+                                                <option value="<?= $filac['id']?>"><?= $filac['departamento']?></option>
+                                            <?php } ?>
+                                            </select>
+                                        </div>
                                         <div class="form-group">
                                             <label for="cargos" class=" form-control-label">Ubicacion</label>
                                             <input type="text" name="cargos" placeholder="Ingrese el cargo" class="form-control" value="<?= $fila['ubicacion']?>" required>
@@ -263,6 +133,30 @@
                                           <div class="form-group">
                                             <label for="cargos" class=" form-control-label">Precio</label>
                                             <input type="text" name="precio" placeholder="" class="form-control" value="<?= $fila['desde_precio']?>" required>
+                                        </div>
+                                         <div class="form-group">
+                                            <label for="cargos" class=" form-control-label">N dormitorios</label>
+                                            <?php
+                                           
+                                            $sqlo = "SELECT * FROM respuestas_cualidades WHERE proyecto_id='$id' AND cualidad_id ='1' ";
+                                      $reso = mysqli_query($db,$sqlo);
+                                      $filao = mysqli_fetch_array($reso);
+
+
+                                              ?>
+                                            <input type="text" name="dormi" placeholder="Ingrese el cargo" class="form-control" value="<?= $filao['respuesta']?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cargos" class=" form-control-label">Horario de atencion</label>
+                                            <?php
+                                           
+                                            $sqla = "SELECT * FROM respuestas_cualidades WHERE proyecto_id='$id' AND cualidad_id ='6' ";
+                                      $resa = mysqli_query($db,$sqla);
+                                      $filaa = mysqli_fetch_array($resa);
+
+
+                                              ?>
+                                            <input type="text" name="ate1" placeholder="Ingrese el cargo" class="form-control" value="<?= $filaa['respuesta']?>" required>
                                         </div>
                                         <label  class="checkbox-inline"><input name="llamada" value="1" type="checkbox"  <?php if($fila['aceptar_llamadas']==1){ echo " checked";} ?>>Llamadas</label>
                                          <div class="form-group">
@@ -274,40 +168,4 @@
                                 </div>                          
                             </div>
                         </div>                            
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="copyright">
-                                    <p>Derechos reservados a Tecnicom soluciones & Datos <a href="http://www.tecnicom.pe>Tecnicom soluciones & Datos"</a>.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Jquery JS-->
-    <script src="vendor/jquery-3.2.1.min.js"></script>
-    <!-- Bootstrap JS-->
-    <script src="vendor/bootstrap-4.1/popper.min.js"></script>
-    <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
-    <!-- Vendor JS       -->
-    <script src="vendor/slick/slick.min.js">
-    </script>
-    <script src="vendor/wow/wow.min.js"></script>
-    <script src="vendor/animsition/animsition.min.js"></script>
-    <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-    </script>
-    <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
-    <script src="vendor/counter-up/jquery.counterup.min.js">
-    </script>
-    <script src="vendor/circle-progress/circle-progress.min.js"></script>
-    <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="vendor/chartjs/Chart.bundle.min.js"></script>
-    <script src="vendor/select2/select2.min.js">
-    </script>
-
-    <!-- Main JS-->
-    <script src="js/main.js"></script>
+                        <?php include 'footer.php'; ?>

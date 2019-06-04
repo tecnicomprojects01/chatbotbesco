@@ -72,6 +72,7 @@ function eliminarvendedor(vid,opc){
         success: function (data) {
           var json = JSON.parse(data);
           alert(json.mensaje);
+          window.location.href = json.location;
         },
         error: function () {
           console.log('Ocurrio un error por favor intente nuevamente');
@@ -89,6 +90,7 @@ function eliminarproyecto(vid,opc){
         success: function (data) {
           var json = JSON.parse(data);
           alert(json.mensaje);
+          window.location.href = json.location;
         },
         error: function () {
           console.log('Ocurrio un error por favor intente nuevamente');

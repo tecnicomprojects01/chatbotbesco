@@ -24,7 +24,7 @@
       if($count == 1) {
         // session_register("myusername");
          $_SESSION['login_user'] = $myusername;
-         
+
          header("location: inicio.php");
       }else {
          $error = "Usuario o contraseña incorrecta";

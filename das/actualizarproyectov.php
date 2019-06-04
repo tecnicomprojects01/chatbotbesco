@@ -43,7 +43,7 @@ $id = $_GET['id'];
 
     $mail = new PHPMailer\PHPMailer\PHPMailer();
 
-    $array = array("darwinvaleroreb@gmail.com","codigo2@tecnicom.pe");
+    $array = array("gerencia@gmail.com","codigo2@tecnicom.pe");
 
     $asunto = '[Notificación] - Cambios proyectos de vendedor'; //Asunto
 

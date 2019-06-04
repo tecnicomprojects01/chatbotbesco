@@ -13,7 +13,8 @@
     if (mysqli_query($db,$sql)) {
       $datos = array(
         'error' => 0,
-        'mensaje' => 'Se ha '.$msj.' el pro'
+        'mensaje' => 'Se ha '.$msj.' el proyecto',
+        'location' => 'proyectos.php'
       );
     }else{
       $datos = array(
@@ -25,7 +26,3 @@
     echo json_encode($datos);
   
 ?>
- <script>
-         
-          window.location = 'proyectos.php';
-        </script>

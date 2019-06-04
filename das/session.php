@@ -10,6 +10,10 @@
    
    $login_session = $row['usuario'];
    $login_id = $row['id'];
+
+   $conversiones = $row['conversiones'];
+   $modificaciones = $row['modificaciones'];
+   $usuarios = $row['usuarios'];
    
    if(!isset($_SESSION['login_user'])){
       header("location:index.php");

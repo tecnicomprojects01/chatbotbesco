@@ -13,7 +13,8 @@
     if (mysqli_query($db,$sql)) {
       $datos = array(
         'error' => 0,
-        'mensaje' => 'Se ha '.$msj.' el vendedor'
+        'mensaje' => 'Se ha '.$msj.' el vendedor',
+        'location' => 'vendedores.php'
       );
     }else{
       $datos = array(
